@@ -184,13 +184,14 @@ namespace DataAccess
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="inputStream">input stream. Must be seekable and readable</param>
+        /// <param name="encoding"></param>
         /// <param name="columns">column names</param>
         /// <returns>a streaming data table for the given filename</returns>
-        public static DataTable ReadLazy(this DataTableBuilder builder, Stream inputStream, string[] columns = null)
+        public static DataTable ReadLazy(this DataTableBuilder builder, Stream inputStream, string encoding = "UTF-8", string[] columns = null)
         {
             Debug.Assert(builder != null);
 
-            return new StreamingDataTable(inputStream, columns);
+            return new StreamingDataTable(inputStream, Encoding.GetEncoding(encoding), columns);
         }
 
         

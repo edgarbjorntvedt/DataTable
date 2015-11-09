@@ -14,8 +14,9 @@ namespace DataAccess
     internal class StreamingDataTable : TextReaderDataTable
     {
         internal readonly Stream _input;
-                
-        public StreamingDataTable(Stream input, string[] columns = null, char separator = '\0')
+        Encoding _encoding;
+
+        public StreamingDataTable(Stream input, Encoding encoding, string[] columns = null, char separator = '\0')
             : base(columns, separator)
         {
             // We could optimize to avoid requiring CanSeek if we failed on attempts
@@ -26,13 +27,14 @@ namespace DataAccess
             }
 
             _input = input;
+            _encoding = encoding;
         }
 
         protected override TextReader OpenText()
         {
             _input.Position = 0;
 
-            return new StreamReader(_input);
+            return new StreamReader(_input, _encoding);
         }
         protected override void CloseText(TextReader reader)
         {

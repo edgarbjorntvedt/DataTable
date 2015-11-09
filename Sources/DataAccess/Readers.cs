@@ -381,11 +381,12 @@ namespace DataAccess
             // TextReader is not seekable. Need to convert to a Stream so we can seek. 
             // We're asking for a Mutable dt anyways, so it's already expected to load it in memory. 
             string contents = stream.ReadToEnd();
-            var bytes = Encoding.UTF8.GetBytes(contents);
+            var encoding = Encoding.UTF8;
+            var bytes = encoding.GetBytes(contents);
             contents = null;
             using (MemoryStream ms = new MemoryStream(bytes))
             {
-                var dtLazy = new StreamingDataTable(ms, defaultColumns, delimiter);
+                var dtLazy = new StreamingDataTable(ms, encoding, defaultColumns, delimiter);
 
                 var dt = Utility.ToMutable(dtLazy);
                 return dt;

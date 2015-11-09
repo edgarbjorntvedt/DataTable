@@ -16,9 +16,9 @@ namespace DataAccess
         private readonly DataTableStreamLookup _lookup;
         private readonly Func<Row, TRow> _parser;
 
-        public DataTableStreamLookup(Stream input)
+        public DataTableStreamLookup(Stream input, string encoding = "UTF-8")
         {
-            _lookup = new DataTableStreamLookup(input);
+            _lookup = new DataTableStreamLookup(input, Encoding.GetEncoding(encoding));
             _parser = Row.BuildMethod<TRow>(_lookup._table.ColumnNames);
         }
 
@@ -46,9 +46,10 @@ namespace DataAccess
         /// although it will change the stream's position. 
         /// </summary>
         /// <param name="input"></param>
-        public DataTableStreamLookup(Stream input)
+        /// <param name="encoding"></param>
+        public DataTableStreamLookup(Stream input, Encoding encoding)
         {
-            _table = new StreamingDataTable(input);
+            _table = new StreamingDataTable(input, encoding);
         }
 
         /// <summary>

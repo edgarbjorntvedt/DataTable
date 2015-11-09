@@ -31,6 +31,7 @@ namespace DataAccess
         IDictionary<string, long> _mapping;
 
         Stream _input;
+        Encoding _encoding;
         StreamingDataTable _dt;
         IEnumerator<Row> _rows;
 
@@ -50,10 +51,11 @@ namespace DataAccess
 
             // Share, we don't want multiple indexes to block each other. 
             dtl._input = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read);
+            dtl._encoding = Encoding.UTF8;
             dtl.BuildMap(columnNameToIndex); // This will read the stream
             dtl._input.Position = 0;
 
-            dtl._dt = new StreamingDataTable(dtl._input);
+            dtl._dt = new StreamingDataTable(dtl._input, dtl._encoding);
             dtl._rows = dtl._dt.Rows.GetEnumerator();
             dtl._rows.MoveNext(); // Read past headers
             

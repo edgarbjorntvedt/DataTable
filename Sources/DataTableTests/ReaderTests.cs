@@ -3,6 +3,7 @@ using Xunit;
 using System.IO;
 using System.Linq;
 using System;
+using System.Text;
 
 namespace DataTableTests
 {
@@ -290,7 +291,7 @@ Bob,Smith
             stream.Seek(0, SeekOrigin.Begin);
             try
             {
-                var lazy = builder.ReadLazy(stream, rows[0].Split(','));
+                var lazy = builder.ReadLazy(stream, Encoding.UTF8.WebName, rows[0].Split(','));
                 Assert.Equal(rows[0].Split(','), lazy.ColumnNames);
                 var rowEnumerator = rows.Skip(0).GetEnumerator();
                 rowEnumerator.MoveNext();
